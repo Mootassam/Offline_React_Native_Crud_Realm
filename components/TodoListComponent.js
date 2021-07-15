@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 /*
 Mr Nguyen Duc Hoang
 https://www.youtube.com/c/nguyenduchoang
@@ -27,7 +26,12 @@ import PopupDialogComponent from './PopupDialogComponent';
 let FlatListItem = props => {
   const {itemIndex, id, name, creationDate, popupDialogComponent, onPressItem} =
     props;
-  const showEditModal = () => {};
+  const showEditModal = () => {
+    popupDialogComponent.showDialogComponentForUpdate({
+      id,
+      name,
+    });
+  };
   const showDeleteConfirmation = () => {
     Alert.alert(
       'Delete',
@@ -40,7 +44,15 @@ let FlatListItem = props => {
         },
         {
           text: 'Yes',
-          onPress: () => {},
+          onPress: () => {
+            deleteTodoList(id)
+              .then()
+              .catch(error => {
+                alert(
+                  `Failed to delete todoList with id = ${id}, error=${error}`,
+                );
+              });
+          },
         },
       ],
       {cancelable: true},
@@ -70,7 +82,7 @@ let FlatListItem = props => {
             {name}
           </Text>
           <Text style={{fontSize: 18, margin: 10}} numberOfLines={2}>
-            {creationDate}
+            {/* {creationDate.toLocaleString()} */}
           </Text>
         </View>
       </TouchableOpacity>
@@ -104,6 +116,7 @@ export default class TodoListComponent extends Component {
         <HeaderComponent
           title={'Todo List'}
           hasAddButton={true}
+          hasDeleteAllButton={true}
           showAddTodoList={() => {
             this.refs.popupDialogComponent.showDialogComponentForAdd();
           }}

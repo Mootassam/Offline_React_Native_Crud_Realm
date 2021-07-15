@@ -14,6 +14,8 @@ import {
   Image,
   Alert,
 } from 'react-native';
+//Delete all TodoLists
+import {deleteAllTodoLists} from '../databases/allSchemas';
 const HeaderComponent = props => {
   const {
     title,
@@ -29,6 +31,39 @@ const HeaderComponent = props => {
       {hasAddButton && (
         <TouchableOpacity style={styles.addButton} onPress={showAddTodoList}>
           <Image style={styles.addButtonImage} source={require('./icon.png')} />
+        </TouchableOpacity>
+      )}
+      {hasDeleteAllButton && (
+        <TouchableOpacity
+          style={styles.addButton}
+          onPress={() => {
+            Alert.alert(
+              'Delete all',
+              'Are you sure you want to delete all todoLists ?',
+              [
+                {
+                  text: 'No',
+                  onPress: () => {}, //Do nothing
+                  style: 'cancel',
+                },
+                {
+                  text: 'Yes',
+                  onPress: () => {
+                    deleteAllTodoLists()
+                      .then()
+                      .catch(error => {
+                        alert(`Delete all TodoLists failed. Error = ${error}`);
+                      });
+                  },
+                },
+              ],
+              {cancelable: true},
+            );
+          }}>
+          <Image
+            style={styles.deleteButtonImage}
+            source={require('./delete.png')}
+          />
         </TouchableOpacity>
       )}
     </View>
@@ -64,6 +99,11 @@ const styles = StyleSheet.create({
   addButtonImage: {
     width: 42,
     height: 42,
+    tintColor: 'white',
+  },
+  deleteButtonImage: {
+    width: 26,
+    height: 26,
     tintColor: 'white',
   },
 });
